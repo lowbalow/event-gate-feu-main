@@ -1,19 +1,41 @@
 import "./App.css";
 import { Routes, Route } from "react-router";
-import { lazy, Suspense } from "react";
 import HomePage from "./pages/HomePage";
-
-const SignUp = lazy(() => import("./pages/SignUp"));
+import LoginPage from "./pages/Login";
+import supabase from "./utils/supabase";
+import { useState, useEffect } from "react";
+import { SessionContext } from "./Context/SessionContext";
+import SignUp from "./pages/SignUp";
 
 function App() {
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/sign-up" element={<SignUp />} />
-			</Routes>
-		</Suspense>
-	);
+  //state
+  const [session, setSession] = useState(null);
+  //useEffect
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("event:", event);
+      console.log("session:", session);
+      if (event === "SIGNED_OUT") {
+        setSession(null);
+      } else if (session) {
+        setSession(session);
+      }
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+  return (
+   <SessionContext.Provider value={session}>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<LoginPage />} />
+    </Routes>
+   </SessionContext.Provider>
+  );
 }
 
 export default App;

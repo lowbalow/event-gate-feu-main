@@ -2,8 +2,25 @@ import React from "react";
 import { NavLink } from "react-router";
 import SignUpIcon from "./icons/SignUpIcon";
 import HomeIcon from "./icons/HomeIcon";
+import { SessionContext } from "../Context/SessionContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router";
+import supabase from "../utils/supabase";	
 
 const NavBar = () => {
+		const session = useContext(SessionContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    // Implement logout functionality here
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Ewan ko sayo");
+    } else {
+      navigate("/login");
+    }
+  };
+
 	return (
 		<div className="navbar bg-base-100 shadow-sm">
 			<div className="flex w-full max-w-7xl mx-auto">
@@ -16,16 +33,29 @@ const NavBar = () => {
 				<div className="flex-none">
 					<NavLink
 						to="/"
-						className="btn btn-primary mr-4 rounded-full btn-outline"
+						className="btn btn-primary mr-4 rounded-full "
 					>
 						<HomeIcon className="text-lg" />
 						Home
 					</NavLink>
-					<NavLink to="/sign-up" className="btn btn-primary mr-4 rounded-full">
-						<SignUpIcon className="text-lg" />
-						Sign Up
-					</NavLink>
-					<div className="dropdown dropdown-end">
+					{!session && (
+						<>
+							<NavLink
+								to="/login"
+								className="btn btn-primary mr-4 rounded-full "
+							>
+							Login
+							</NavLink>
+							<NavLink
+								to="/signup"
+								className="btn btn-primary mr-4 rounded-full "
+							>
+								Sign Up
+							</NavLink>
+						</>
+					)}
+					{session && (
+						<div className="dropdown dropdown-end">
 						<div
 							tabIndex={0}
 							role="button"
@@ -52,10 +82,11 @@ const NavBar = () => {
 								<a>Settings</a>
 							</li>
 							<li>
-								<a>Logout</a>
+								<button onClick={handleLogout}>Logout</button>
 							</li>
 						</ul>
 					</div>
+				)}
 				</div>
 			</div>
 		</div>

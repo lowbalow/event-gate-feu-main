@@ -1,10 +1,10 @@
 import Input from "../components/form/Input";
 import MainLayout from "../layouts/MainLayout";
 import Card from "../components/Card";
-import { supabase } from "../utils/supabase";
+import supabase  from "../utils/supabase";
 import SendIcon from "../components/icons/SendIcon";
 import { useContext, useEffect } from "react";
-import { SessionContext } from "../contexts/SessionContext";
+import { SessionContext } from "../Context/SessionContext";
 import { useNavigate } from "react-router";
 
 const Login = () => {
