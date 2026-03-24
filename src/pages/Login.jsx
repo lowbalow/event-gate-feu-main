@@ -1,8 +1,8 @@
-import Input from "../componets/form/Input";
+import Input from "../components/form/Input";
 import MainLayout from "../layouts/MainLayout";
-import Card from "../componets/Card";
-import { supabase } from "../Utils/SuperBase";
-import SendIcon from "../componets/icons/SendIcon";
+import Card from "../components/Card";
+import { supabase } from "../utils/supabase";
+import SendIcon from "../components/icons/SendIcon";
 import { useContext, useEffect } from "react";
 import { SessionContext } from "../contexts/SessionContext";
 import { useNavigate } from "react-router";
