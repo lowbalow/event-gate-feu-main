@@ -2,7 +2,7 @@ import React from "react";
 import MainLayout from "../layouts/MainLayout";
 
 const HomePage = () => {
-	return <MainLayout>This is the Home page</MainLayout>;
+	return <MainLayout>hello this home page</MainLayout>;
 };
 
 export default HomePage;
